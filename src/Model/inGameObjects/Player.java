@@ -5,6 +5,7 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
 import Model.zones.zoneAbstract.Zone;
+import view.uiElements.HeartModule;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
@@ -34,12 +35,18 @@ public class Player {
 	private Sound ded;
 	private Sound hitSound;
 	
+	private HeartModule hearts;
+	private Coin staticCoin;
+	
 	private SpriteSheet left;
 	private SpriteSheet right;
 	private SpriteSheet idle;
+	private SpriteSheet idleLeft;
+
 	private Animation animatedSpriteRight;
 	private Animation animatedSpriteLeft;
 	private Animation animatedIdle;
+	private Animation animatedIdleLeft;
 	private Animation animatedSprite;
 	
 	private boolean loadNext = false;
@@ -65,7 +72,7 @@ public class Player {
 
 	public Player(Zone zone)  {
 		setCurrentState(zone);
-		body = new Rectangle(0, 700, 64, 64);
+		body = new Rectangle(0, 700, 58, 64);
 	}
 	
 
@@ -74,24 +81,34 @@ public class Player {
 			right = new SpriteSheet("/assets/art/characters/hero/playerWalk.png", 58, 64);
 			left = new SpriteSheet("/assets/art/characters/hero/playerWalkLeft.png", 58, 64);
 			idle = new SpriteSheet("/assets/art/characters/hero/idle.png", 58, 64);
+			idleLeft = new SpriteSheet("/assets/art/characters/hero/IdleLeft.png", 58, 64);
+			setHearts(new HeartModule());
+			setStaticCoin(new Coin(50, 150));
+ 
+
 
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		animatedSpriteRight = new Animation(right, 100);
-		animatedSpriteLeft = new Animation(left, 100);
+		animatedSpriteRight = new Animation(right, 90);
+		animatedSpriteLeft = new Animation(left, 90);
 		animatedIdle = new Animation(idle, 100);
+		animatedIdleLeft = new Animation(idleLeft, 100);
+		
+		animatedSprite = animatedIdle;
+
 	}
-	public void updateMovement(ArrayList<Coin> coins, ArrayList<NPC> enemies,ArrayList<Rectangle> ded, ArrayList<Rectangle> collisions, Rectangle floor, boolean up, boolean down, boolean left, boolean right) {
+	public void update(ArrayList<Coin> coins, ArrayList<NPC> enemies,ArrayList<Rectangle> ded, ArrayList<Rectangle> collisions, Rectangle floor, boolean up, boolean down, boolean left, boolean right) {
 		setLoadNext(false);
+		getHearts().update(hp);
 		if(this.getHp() <= 0) {
 			body.setX(20);
 			this.setHp(3);
 		}
 		
-		if(down == true) {body.setX(550);}
+		if(down == true) {body.setY(350);}
 		
 		if(System.nanoTime() - timeSinceLastHit >  1000000000) { invincible = false;}
 		if(System.nanoTime() - timeSinceLastSound >  250000000) { mute = false;}     //ALSO STOP WHILE IN THE AIR
@@ -160,9 +177,8 @@ public class Player {
 	
 	
 	
-	/*
-	 * Simple function which checks players position against spots on the map which kill them. ie; pits, spikes, etc 
-	 */
+	
+	 //Simple function which checks players position against spots on the map which kill them. ie; pits, spikes, etc 
 	public void checkDeadCollision(ArrayList<Rectangle>ded) {
 		for(int i = 0; i < ded.size(); i++){ 
 			if(ded.get(i).intersects(body)) {
@@ -175,11 +191,10 @@ public class Player {
 	
 	
 	
-	/*
-	 * Function for simple left right movement. Also covers standing still, as well as collision while standing still
-	 */
+	
+	// Function for simple left right movement. Also covers standing still, as well as collision while standing still
+	 
 	public void move(boolean left, boolean right, boolean up, ArrayList<NPC> enemies) {
-		animatedSprite = animatedIdle;
 		if(left == true) {
 			if(mute == false) {
 		//		currentState.getFootStepType().play();
@@ -187,8 +202,9 @@ public class Player {
 				mute = true;
 			}
 			vX = -speed;
-			animatedSprite = animatedSpriteLeft;
+		animatedSprite = animatedSpriteLeft;
 		}
+		
 		else if(right == true) {
 			if(mute == false) {
 			//	currentState.getFootStepType().play();
@@ -197,16 +213,23 @@ public class Player {
 			}
 			vX = speed;
 			animatedSprite = animatedSpriteRight;
-
 		} 
+		
+		
 		else { 
-			animatedSprite = animatedIdle;
+			if(animatedSprite == animatedSpriteRight) {
+				animatedSprite = animatedIdle;
+			}
+			else if(animatedSprite == animatedSpriteLeft) {
+			animatedSprite = animatedIdleLeft;
+
+			}
 			vX = 0;		
 			xCollisionZeroMovement(enemies);
 		}
 	}
 	
-	
+		
 	
 	/*
 	 * Checks still players collision against moving enemies
@@ -216,7 +239,7 @@ public class Player {
 		for(int i = 0; i < enemies.size(); i++) {
 			
 			if(enemies.get(i).getBody().getCenterX() > body.getCenterX()) { //enemy is on players right
-				if(enemies.get(i).getBody().getCenterX() - body.getCenterX() < 40 && enemies.get(i).vX < 0 &&  enemies.get(i).getBody().getMaxY() < body.getMinY()) { //and enemy is within range and moving left
+				if(enemies.get(i).getBody().getCenterX() - body.getCenterX() < 40 && enemies.get(i).vX < 0 &&  enemies.get(i).getBody().getMaxY() < body.getMinY() && body.getMaxY() <= enemies.get(i).getBody().getMinY()) { //and enemy is within range and moving left
 					body.setX(body.getX() - 0.1f );
 					enemies.get(i).getBody().setX(enemies.get(i).getBody().getX() + 1.5f);
 					if(invincible == false) { 
@@ -228,7 +251,7 @@ public class Player {
 					return;}}
 			
 			else if(enemies.get(i).getBody().getCenterX() < body.getCenterX()) { //enemy is on players left
-				if(body.getCenterX() - enemies.get(i).getBody().getCenterX()  < 40 && enemies.get(i).vX > 0 &&  enemies.get(i).getBody().getMaxY() < body.getMinY()) {
+				if(body.getCenterX() - enemies.get(i).getBody().getCenterX()  < 40 && enemies.get(i).vX > 0 &&  enemies.get(i).getBody().getMaxY() < body.getMinY()  && body.getMaxY() <= enemies.get(i).getBody().getMinY()) {
 					body.setX(body.getX() + 0.1f );
 					enemies.get(i).getBody().setX(enemies.get(i).getBody().getX() - 1.5f);
 					if(invincible == false) { 
@@ -310,27 +333,26 @@ public class Player {
 		float vYtemp = vY/iterations;
 		for(int i = 0; i < iterations; i++) {
 			
-			
+			 
 			body.setY(body.getY() + vYtemp);
 			
 			for(int j = 0; j < collisions.size(); j++) {
 				if(body.intersects(floor) || body.intersects( collisions.get(j))) {					
 					//jumping on an enemy
+					
 					if(body.intersects(collisions.get(j))) {
 						for(int k = 0; k < enemies.size(); k++) {
-							if(enemies.get(k).getBody() == collisions.get(j) && (enemies.get(k).getBody().getY() + 12 ) > body.getY() ) { //check if player is ontop of the enemy
+							if( enemies.get(k).getBody() == collisions.get(j) && (body.getMaxY() - 12) < enemies.get(k).getBody().getMinY() ) { //check if player is ontop of the enemy
 								invincible = true;
-							//	timeSinceLastHit = System.nanoTime();
+								timeSinceLastHit = System.nanoTime();
 								if(enemies.get(k).isInvincible() == false) {
 									enemies.get(k).ded.play(1,200.0f);
 									enemies.get(k).setHp(enemies.get(k).getHp() - 1);
 									enemies.get(k).setTimeSinceLastHit(System.nanoTime());
 									enemies.get(k).setInvincible(true);
 								}
-								enemies.get(k).setInvincible(true);
-							} 
-						}
-					}
+								enemies.get(k).setInvincible(true);	}}}
+					
 					
 				body.setY(body.getY() - vYtemp); //resistance to gravity to keep player from falling through the floor.
 				vY = 0; 		
@@ -454,6 +476,26 @@ public class Player {
 
 	public void setAnimatedSprite(Animation animatedSprite) {
 		this.animatedSprite = animatedSprite;
+	}
+
+
+	public HeartModule getHearts() {
+		return hearts;
+	}
+
+
+	public void setHearts(HeartModule hearts) {
+		this.hearts = hearts;
+	}
+
+
+	public Coin getStaticCoin() {
+		return staticCoin;
+	}
+
+
+	public void setStaticCoin(Coin staticCoin) {
+		this.staticCoin = staticCoin;
 	}
 
 

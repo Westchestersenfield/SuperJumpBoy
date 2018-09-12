@@ -42,6 +42,14 @@ public abstract class Zone extends BasicGameState {
 		return 0;
 	}
 
+	public abstract void createDed();
+	public abstract void createMobs();
+	public abstract void createCoins();
+	public abstract void createPlatforms();
+
+		
+	
 	public abstract Sound getFootStepType();
+	
 
 }

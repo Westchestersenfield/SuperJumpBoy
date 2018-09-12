@@ -16,10 +16,7 @@ import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import Model.inGameObjects.Coin;
-import Model.inGameObjects.NPC;
-import Model.inGameObjects.Player;
-import Model.inGameObjects.ScrubPatrol;
+import Model.inGameObjects.*;
 import Model.zones.zoneAbstract.Zone;
 import slickMain.Main;
 
@@ -41,10 +38,12 @@ public class Level1 extends Zone{
 	private Rectangle platform6;
 	private Rectangle platform7;
 
-	private ArrayList<Rectangle> ded = new ArrayList<Rectangle>();
+	private ArrayList<Rectangle> ded;
 
-	private ArrayList<NPC> enemies = new ArrayList<NPC>();
-	private ScrubPatrol testMob1 = new ScrubPatrol();
+	private ArrayList<NPC> enemies;
+	private ScrubPatrol testMob1;
+	private ScrubPatrol testMob2;
+
 
 	private ArrayList<Coin> coins;
 	private Coin coin1;
@@ -66,91 +65,49 @@ public class Level1 extends Zone{
 		background = new Image("/assets/art/levels/zone1/level1.png");
 		
 		player = Main.getPlayer();
-		player.setCurrentState(this);
+		player.setCurrentState(this);		
 		
-		System.out.println(this);
-		System.out.println(player.getCurrentState());
-
+		//Coins init
+		createCoins();
 		
+		//Mobs init
+		createMobs();
 		
-		floor = new Rectangle(700, 0, 110, 1280);
-		sideEast = new Rectangle(1280,0, 50, 1300);
-		sideWest = new Rectangle(-50,0, 50, 1300);
+		//Platform init
+		createPlatforms();
 		
-		coins = new ArrayList<Coin>();
-		coin1 = new Coin(500, 400);
-		coin2 = new Coin(550, 400);
-		coin3 = new Coin(170, 400);
-
-		coins.add(coin1);
-		coins.add(coin2);
-		coins.add(coin3);
+		//Ded init
+		createDed();
+		
 	} 
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.drawString("WOW!", 50, 50);
-		g.setColor(Color.cyan);
+		g.setColor(Color.white);
 		
-		//RECTANGLE: X Pos, Y Pos, X size, Y size
-		
-		//horizontal platforms
-		platform1 = new Rectangle(100, 700, 135, 24);
-		platform2 = new Rectangle(305, 640, 135, 24);		
-		platform4 = new Rectangle(85, 535, 135, 24);
-		platform5 = new Rectangle(300, 459, 135, 24);  
-		
-		//vertical platforms
-		platform3 = new Rectangle(455, 465, 45, 290);
-
-		
-		//unused platforms
-		platform6 = new Rectangle(500, 600, 24, 150);
-		platform7 = new Rectangle(600, 50, 24, 550); 
-		
-		floor = new Rectangle(0, 750, 1280, 100);
-		
-		if(enemies.size() > 0) {
-			enemies.remove(testMob1);
-		}
-		enemies.add(testMob1);
-		
-		if(collides.size() > 0) {
-			collides.clear();
-		}
-		
-		collides.add(sideWest); 
-		collides.add(sideEast);
-		
-		collides.add(testMob1.getBody());
-		collides.add(platform1);
-		collides.add(platform2);
-		collides.add(platform3);
-		collides.add(platform4);
-		collides.add(platform5);
-				
 		//ded.add(ded1);
 
 		g.drawImage(background, 0, 0);
 		player.getAnimatedSprite().draw(player.getBody().getX(), player.getBody().getY());
-		g.draw(floor);
+		g.drawImage(player.getHearts().getCurrent(), 100, 100);
+		g.drawImage(player.getStaticCoin().getStaticCoin(), 100, 140);
+		//g.draw(floor);
 		
-		g.drawString("HP: " + Integer.toString(player.getHp()), 50, 150);
-		g.drawString("MOB HP: " + Integer.toString(testMob1.getHp()), 950, 175);
-		g.drawString("COINS: " + Integer.toString(player.getGold()), 50, 200 );
+		g.drawString(" x " + Integer.toString(player.getGold()), 130, 150 );
 
 
-		
 		for(int i = 0; i < enemies.size(); i++){
 			enemies.get(i).getAnimatedSprite().draw(enemies.get(i).getBody().getX(), enemies.get(i).getBody().getY());
 		}
+			
 		for(int i = 0; i < collides.size(); i++) {
-			g.draw(collides.get(i));
+		//	g.draw(collides.get(i));
 		}
 		
-		for(int i = 0; i < coins.size(); i++) {
+		for(int i =0; i < coins.size(); i++) {
 			coins.get(i).getCoinAnimation().draw(coins.get(i).getBody().getX(), coins.get(i).getBody().getY());
-		}  
+		}
 		for(int i = 0; i < ded.size(); i++) {
 			g.draw(ded.get(i));
 		} 
@@ -163,25 +120,23 @@ public class Level1 extends Zone{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		Input input = gc.getInput(); //obtain keyboard input
 		
-		if(testMob1.getHp() > 0) {
-			testMob1.patrol();
+		for(int i = 0; i < enemies.size(); i++) {
+			if(enemies.get(i).getHp() > 0) {
+				enemies.get(i).patrol();
+			}
+			else {
+				enemies.get(i).getBody().setX(-100);
+				enemies.remove(enemies.get(i));
+			}
 		}
-		else { 
-			testMob1.getBody().setX(-100);
-			enemies.remove(testMob1);
-		}
-	
-		testMob1.patrol();
+			
 		
-		player.updateMovement(coins, enemies, ded, collides, floor, input.isKeyDown(Input.KEY_W), input.isKeyDown(Input.KEY_S), input.isKeyDown(Input.KEY_A), input.isKeyDown(Input.KEY_D));		
+		player.update(coins, enemies, ded, collides, floor, input.isKeyDown(Input.KEY_W), input.isKeyDown(Input.KEY_S), input.isKeyDown(Input.KEY_A), input.isKeyDown(Input.KEY_D));
 		if(input.isKeyDown(Input.KEY_R)) {
 			System.out.println("Here's a break");
 		}
 		
-		if(player.isLoadNext() == true) {
-			nextLevel(gc, sbg);
-		}
-		
+		if(player.isLoadNext() == true) {nextLevel(gc, sbg);}
 	}
 
 
@@ -190,8 +145,7 @@ public class Level1 extends Zone{
 		return id;
 	}
 	
-	
-	
+		
 	
 	public void changeState(GameContainer gc, StateBasedGame sbg)
 	{
@@ -199,11 +153,11 @@ public class Level1 extends Zone{
 	    Input input = gc.getInput();
 	    if(input.isKeyPressed(Keyboard.KEY_ESCAPE))
 	    {
-	        sbg.enterState(2);
+	        sbg.enterState(1000);
 	    }
 	    else if(input.isKeyPressed(Keyboard.KEY_SPACE))
 	    {
-	        sbg.enterState(3);
+	        sbg.enterState(1001);
 	    }
 	}
 	
@@ -218,4 +172,57 @@ public class Level1 extends Zone{
 		return footStepType;
 		
 	}
+		
+	public void createMobs() {
+		enemies = new ArrayList<NPC>();
+		testMob1 = new ScrubPatrol(800,690, 1);
+		
+		enemies.add(testMob1);
+	}
+	
+	public void createCoins() {
+		coins = new ArrayList<Coin>();
+		coin1 = new Coin(500, 400);
+		coin2 = new Coin(550, 400);
+		coin3 = new Coin(170, 400);
+
+		coins.add(coin1);
+		coins.add(coin2);
+		coins.add(coin3);
+	}
+	
+	public void createPlatforms() {
+
+		platform1 = new Rectangle(100, 700, 135, 24);
+		platform2 = new Rectangle(305, 640, 135, 24);		
+		platform4 = new Rectangle(85, 535, 135, 24);
+		platform5 = new Rectangle(300, 459, 135, 24);  
+		
+		platform3 = new Rectangle(455, 465, 45, 290);
+		
+		platform6 = new Rectangle(500, 600, 24, 150);
+		platform7 = new Rectangle(600, 50, 24, 550); 
+			
+		
+		sideWest = new Rectangle(-24,0, 24, 1000);
+		sideEast = new Rectangle(1280, 0, 24, 1000);
+		floor = new Rectangle(0,750, 1280, 50);
+		
+		collides.add(sideWest); 
+		collides.add(sideEast);
+		collides.add(floor);
+		 
+		collides.add(testMob1.getBody());
+		collides.add(platform1);
+		collides.add(platform2);
+		collides.add(platform3);
+		collides.add(platform4);
+		collides.add(platform5);
+		//collides.add(platform6);
+	}
+	
+	public void createDed() {
+		ded = new ArrayList<Rectangle>();
+	}
+	
 }

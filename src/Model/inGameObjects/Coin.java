@@ -11,6 +11,7 @@ public class Coin {
 	
 	private Rectangle body;
 	private Image image;
+	private Image staticCoin;
 	private Sound grabbed;
 	
 	private SpriteSheet rotatingCoin;
@@ -22,6 +23,7 @@ public class Coin {
 
 		try {
 			rotatingCoin = new SpriteSheet("/assets/art/coins/FullCoins32.png", 32,32);
+			setStaticCoin(new Image("/assets/art/coins/coin_01.png"));
 			setCoinAnimation(new Animation(rotatingCoin, 100));
 			grabbed = new Sound("/assets/sound/coinGrab.wav");
 		} catch (SlickException e) {
@@ -50,5 +52,13 @@ public class Coin {
 
 	public void setBody(Rectangle body) {
 		this.body = body;
+	}
+
+	public Image getStaticCoin() {
+		return staticCoin;
+	}
+
+	public void setStaticCoin(Image staticCoin) {
+		this.staticCoin = staticCoin;
 	}
 }	

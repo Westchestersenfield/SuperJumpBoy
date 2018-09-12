@@ -84,7 +84,7 @@ public class StartScreen extends Zone  {
 			input.clearKeyPressedRecord();
 			Main.getPlayer().getBody().setX(10);
 			Main.getPlayer().init();
-	        sbg.enterState(2);
+	        sbg.enterState(1);
 	    }
 	}
 
@@ -92,6 +92,30 @@ public class StartScreen extends Zone  {
 	public Sound getFootStepType() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void createDed() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void createMobs() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void createCoins() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void createPlatforms() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

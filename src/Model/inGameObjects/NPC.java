@@ -11,6 +11,7 @@ public abstract class NPC {
 	private int hp;
 	private long timeSinceLastHit;
 	private boolean invincible;
+	protected int patrolStrategy;
 	
 	protected Rectangle body;
 	protected SpriteSheet sprite;
@@ -61,6 +62,8 @@ public abstract class NPC {
 
 	public abstract Animation getAnimatedSpriteLeft();
 	public abstract Animation getAnimatedSpriteRight();
+
+	public abstract void patrol();
 
 
  

@@ -5,13 +5,14 @@ import org.lwjgl.opengl.Display;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.ShapeRenderer;
 import org.newdawn.slick.state.StateBasedGame;
 
 import Model.inGameObjects.Player;
 import Model.menuStates.StartScreen;
 import Model.zones.*;
-import Model.zones.testZones.TestState2;
+import Model.zones.zone1.Level1;
 import Model.zones.zone1.Level2;
 
 
@@ -27,9 +28,9 @@ public class Main extends StateBasedGame {
 		AppGameContainer appgc;		
 		try {
 			
-			appgc = new AppGameContainer(new Main("Super Awesome Platformer"));
+			appgc = new AppGameContainer(new Main("Super Jump Boy"));
 			appgc.setDisplayMode(1280,800, false);
-			appgc.setAlwaysRender(true); //realtime rendering
+			appgc.setAlwaysRender(true);
 			player = new Player(startScreen);
 			appgc.start();
 			appgc.setDisplayMode(1280,800, false);
@@ -43,12 +44,12 @@ public class Main extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer arg0) throws SlickException {
 		addState(startScreen);
-	//	addState(new Level1());
+		addState(new Level1());
 		addState(new Level2());
 		
 		
 //		addState(new TestState());
-		addState(new TestState2());
+//		addState(new TestState2());
 		
 	}
 
@@ -61,3 +62,4 @@ public class Main extends StateBasedGame {
 	}
 
 }
+

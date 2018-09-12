@@ -25,14 +25,15 @@ public class ScrubPatrol extends NPC{
 
 
  
-	public ScrubPatrol() {
-		this.setBody(new Rectangle(700,690,64,64));
+	public ScrubPatrol(int x, int y, int patrolStrat) {
+		this.setBody(new Rectangle(x, y, 64, 64));
 		try {
 			this.ded = new Sound("/assets/sound/combat/hitSlime.ogg");
-			left = new SpriteSheet("/assets/art/characters/enemies/greenMonster/greenMonsterLeft.png", 64, 64);
-			right = new SpriteSheet("/assets/art/characters/enemies/greenMonster/greenMonsterRight.png", 64, 64);
+			left = new SpriteSheet("/assets/art/characters/enemies/greenMonster/greenMonsterLeft1.png", 64, 64);
+			right = new SpriteSheet("/assets/art/characters/enemies/greenMonster/greenMonsterRight1.png", 64, 64);
 			animatedSpriteLeft = new Animation(left, 100);
 			animatedSpriteRight = new Animation(right, 100);
+			patrolStrategy = patrolStrat;
 
 
 			
@@ -41,7 +42,7 @@ public class ScrubPatrol extends NPC{
 			e.printStackTrace();
 		}
 		this.initialX = getBody().getX();
-		this.speed = 0.6f;
+		this.speed = 1.0f;
 		this.setHp(3);
 	} 
 	
@@ -56,29 +57,55 @@ public class ScrubPatrol extends NPC{
 	
 	
 	public void patrol() { 
-		 		
-		if(getBody().getX() == initialX && flag == 0) {
-			vX = -speed;
-			flag = 1;
-			animatedSprite = animatedSpriteLeft;
-		}
 		
-		if(getBody().getX() > (this.initialX + 100)) { // moving left
-			animatedSprite = animatedSpriteLeft;
-
-			vX = -speed;
-		}
-		
-		
-		if(getBody().getX() < (this.initialX - 100)) { //moving right
-			animatedSprite = animatedSpriteRight;
-
-			vX = speed;
+		if(patrolStrategy == 1) {	
+			if(getBody().getX() == initialX && flag == 0) {
+				vX = -speed;
+				flag = 1;
+				animatedSprite = animatedSpriteLeft;
+			}
+			
+			if(getBody().getX() > (this.initialX + 100)) { // moving left
+				animatedSprite = animatedSpriteLeft;
 	
+				vX = -speed;
+			}
+			
+			
+			if(getBody().getX() < (this.initialX - 100)) { //moving right
+				animatedSprite = animatedSpriteRight;
+	
+				vX = speed;
+		
+			}
+			getBody().setX(getBody().getX() + vX);
 		}
-		getBody().setX(getBody().getX() + vX);
+		else if(patrolStrategy == 2){
+			if(getBody().getX() == initialX && flag == 0) {
+				vX = speed;
+				flag = 1;
+				animatedSprite = animatedSpriteRight;
+			}
+			
+			if(getBody().getX() > (this.initialX + 100)) { // moving left
+				animatedSprite = animatedSpriteLeft;
+
+				vX = -speed;
+			}
+			
+			
+			if(getBody().getX() < (this.initialX - 100)) { //moving right
+				animatedSprite = animatedSpriteRight;
+
+				vX = speed;
+		
+			}
+			getBody().setX(getBody().getX() + vX);
+
+		}
 
 	}
+	
 
 
 	@Override

@@ -4,6 +4,7 @@ package Model.inGameObjects;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
+import Model.inGameObjects.NPCs.NPC;
 import Model.zones.zoneAbstract.Zone;
 import view.uiElements.HeartModule;
 
@@ -78,10 +79,10 @@ public class Player {
 
 	public void init() {
 		try {
-			right = new SpriteSheet("/assets/art/characters/hero/playerWalk.png", 58, 64);
-			left = new SpriteSheet("/assets/art/characters/hero/playerWalkLeft.png", 58, 64);
-			idle = new SpriteSheet("/assets/art/characters/hero/idle.png", 58, 64);
-			idleLeft = new SpriteSheet("/assets/art/characters/hero/IdleLeft.png", 58, 64);
+			right = new SpriteSheet("/assets/art/characters/hero/walk/playerWalk.png", 58, 64);
+			left = new SpriteSheet("/assets/art/characters/hero/walk/playerWalkLeft.png", 58, 64);
+			idle = new SpriteSheet("/assets/art/characters/hero/stand/idle.png", 58, 64);
+			idleLeft = new SpriteSheet("/assets/art/characters/hero/stand/IdleLeft.png", 58, 64);
 			setHearts(new HeartModule());
 			setStaticCoin(new Coin(50, 150));
  
@@ -346,7 +347,7 @@ public class Player {
 								invincible = true;
 								timeSinceLastHit = System.nanoTime();
 								if(enemies.get(k).isInvincible() == false) {
-									enemies.get(k).ded.play(1,200.0f);
+									enemies.get(k).getDed().play(1,200.0f);
 									enemies.get(k).setHp(enemies.get(k).getHp() - 1);
 									enemies.get(k).setTimeSinceLastHit(System.nanoTime());
 									enemies.get(k).setInvincible(true);

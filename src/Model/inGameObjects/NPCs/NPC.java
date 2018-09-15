@@ -1,4 +1,4 @@
-package Model.inGameObjects;
+package Model.inGameObjects.NPCs;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Sound;
@@ -7,7 +7,7 @@ import org.newdawn.slick.geom.Rectangle;
 
 public abstract class NPC {
 	
-	protected Sound ded;
+	private Sound ded;
 	private int hp;
 	private long timeSinceLastHit;
 	private boolean invincible;
@@ -64,6 +64,14 @@ public abstract class NPC {
 	public abstract Animation getAnimatedSpriteRight();
 
 	public abstract void patrol();
+
+	public Sound getDed() {
+		return ded;
+	}
+
+	public void setDed(Sound ded) {
+		this.ded = ded;
+	}
 
 
  

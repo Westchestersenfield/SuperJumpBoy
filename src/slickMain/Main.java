@@ -12,8 +12,10 @@ import org.newdawn.slick.state.StateBasedGame;
 import Model.inGameObjects.Player;
 import Model.menuStates.StartScreen;
 import Model.zones.*;
-import Model.zones.zone1.Level1;
-import Model.zones.zone1.Level2;
+import Model.zones.zone1.*;
+//import Model.zones.zone1.Level1;
+//import Model.zones.zone1.Level2;
+//import Model.zones.zone1.Level3;
 
 
 public class Main extends StateBasedGame {
@@ -44,9 +46,10 @@ public class Main extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer arg0) throws SlickException {
 		addState(startScreen);
-		addState(new Level1());
-		addState(new Level2());
-		
+//		addState(new Level1());
+//		addState(new Level2());
+		addState(new Level3());
+
 		
 //		addState(new TestState());
 //		addState(new TestState2());

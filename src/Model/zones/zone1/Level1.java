@@ -17,6 +17,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import Model.inGameObjects.*;
+import Model.inGameObjects.NPCs.NPC;
+import Model.inGameObjects.NPCs.ScrubPatrol;
 import Model.zones.zoneAbstract.Zone;
 import slickMain.Main;
 

@@ -17,6 +17,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import Model.inGameObjects.*;
+import Model.inGameObjects.NPCs.NPC;
+import Model.inGameObjects.NPCs.ScrubPatrol;
 import Model.zones.zoneAbstract.Zone;
 import slickMain.Main;
 
@@ -40,7 +42,7 @@ public class Level2 extends Zone{
 
 	private ArrayList<Rectangle> ded;
 
-	private ArrayList<NPC> enemies;
+	private ArrayList<NPC> enemies;	
 	private ScrubPatrol testMob1;
 	private ScrubPatrol testMob2;
 
@@ -175,8 +177,9 @@ public class Level2 extends Zone{
 	
 	public void nextLevel(GameContainer gc, StateBasedGame sbg)
 	{
-        sbg.enterState(2);
+        sbg.enterState(3);
         player.getBody().setX(20);
+       // player.getBody().setY(700);
 	}
 	
 	public Sound getFootStepType(){

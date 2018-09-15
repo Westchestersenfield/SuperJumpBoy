@@ -1,4 +1,4 @@
-package Model.inGameObjects;
+package Model.inGameObjects.NPCs;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
@@ -28,7 +28,7 @@ public class ScrubPatrol extends NPC{
 	public ScrubPatrol(int x, int y, int patrolStrat) {
 		this.setBody(new Rectangle(x, y, 64, 64));
 		try {
-			this.ded = new Sound("/assets/sound/combat/hitSlime.ogg");
+			this.setDed(new Sound("/assets/sound/combat/hitSlime.ogg"));
 			left = new SpriteSheet("/assets/art/characters/enemies/greenMonster/greenMonsterLeft1.png", 64, 64);
 			right = new SpriteSheet("/assets/art/characters/enemies/greenMonster/greenMonsterRight1.png", 64, 64);
 			animatedSpriteLeft = new Animation(left, 100);
@@ -48,7 +48,7 @@ public class ScrubPatrol extends NPC{
 	
 	
 	public ScrubPatrol(Sound dedSound, int hp, Rectangle body, Image texture ) {
-		this.ded = dedSound;
+		this.setDed(dedSound);
 		this.setHp(hp);
 		this.setBody(body);
 		this.speed = 0.6f; 

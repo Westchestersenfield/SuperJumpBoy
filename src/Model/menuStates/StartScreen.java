@@ -84,7 +84,7 @@ public class StartScreen extends Zone  {
 			input.clearKeyPressedRecord();
 			Main.getPlayer().getBody().setX(10);
 			Main.getPlayer().init();
-	        sbg.enterState(1);
+	        sbg.enterState(3);
 	    }
 	}
 

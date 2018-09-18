@@ -155,6 +155,7 @@ public class Level3 extends Zone{
 	@Override
 	public int getID() {
 		return id;
+		//asdasd
 	}
 	
 	

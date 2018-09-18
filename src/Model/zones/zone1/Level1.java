@@ -139,7 +139,7 @@ public class Level1 extends Zone{
 		
 		player.update(coins, enemies, ded, collides, floor, input.isKeyDown(Input.KEY_W), input.isKeyDown(Input.KEY_S), input.isKeyDown(Input.KEY_A), input.isKeyDown(Input.KEY_D));
 		if(input.isKeyDown(Input.KEY_R)) {
-			System.out.println("Here's a break");
+			 nextLevel3(gc, sbg);
 		}
 		if(input.isKeyDown(Input.KEY_ESCAPE)) {
 			changeState(gc, sbg);
@@ -171,6 +171,11 @@ public class Level1 extends Zone{
 	public void nextLevel(GameContainer gc, StateBasedGame sbg)
 	{
         sbg.enterState(2);
+        player.getBody().setX(20);
+	}
+	public void nextLevel3(GameContainer gc, StateBasedGame sbg)
+	{
+        sbg.enterState(3);
         player.getBody().setX(20);
 	}
 	

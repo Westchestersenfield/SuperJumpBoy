@@ -44,6 +44,12 @@ public class Level3 extends Zone{
 	private Rectangle platform8;
 	private Rectangle platform9;
 	private Rectangle platform10;
+	private Rectangle platform11;
+	private Rectangle platform12;
+	private Rectangle platform13;
+	private Rectangle platform14;
+
+
 
 	private ArrayList<Rectangle> ded;
 
@@ -109,7 +115,7 @@ public class Level3 extends Zone{
 		}
 			
 		for(int i = 0; i < collides.size(); i++) {
-			g.draw(collides.get(i));
+			//8g.draw(collides.get(i));
 		}
 		
 		for(int i =0; i < coins.size(); i++) {
@@ -190,7 +196,7 @@ public class Level3 extends Zone{
 	
 	public void createCoins() {
 		coins = new ArrayList<Coin>();
-		coin1 = new Coin(170, 400);
+		coin1 = new Coin(550, 340);
 		coin2 = new Coin(500, 100);
 		coin3 = new Coin(900, 200);
 
@@ -202,14 +208,19 @@ public class Level3 extends Zone{
 	public void createPlatforms() {
 		platform1 = new Rectangle(103, 680, 135, 24);
 		platform2 = new Rectangle(13, 580, 135, 24);	
-		platform3 = new Rectangle(253, 490, 135, 24);
-		platform4 = new Rectangle(355, 435, 135, 24);
+		platform3 = new Rectangle(253, 495, 135, 24);
+		platform4 = new Rectangle(365, 470, 135, 24);
 		platform5 = new Rectangle(457, 560, 135, 24);  		
 		platform6 = new Rectangle(620, 560, 510, 24);		
-		platform7 = new Rectangle(1050, 500, 135, 24); 
-		
-		platform8 = new Rectangle(1050, 500, 135, 24); 
-		platform9 = new Rectangle(1050, 500, 135, 24); 
+		platform7 = new Rectangle(1040, 480, 135, 24); 
+		platform8 = new Rectangle(832, 430, 135, 24); 
+		platform9 = new Rectangle(635, 375, 135, 24); 
+		platform11 = new Rectangle(720, 310, 135, 24); 
+		platform12 = new Rectangle(933, 210, 135, 24); 
+		platform13 = new Rectangle(113, 210, 510, 24);
+		platform14 = new Rectangle(1180, 310, 24, 455); 
+
+
 
 		
 		sideWest = new Rectangle(-24,0, 24, 1000);
@@ -229,6 +240,17 @@ public class Level3 extends Zone{
 		collides.add(platform5);
 		collides.add(platform6);
 		collides.add(platform7);
+		collides.add(platform8);
+		collides.add(platform9);
+		collides.add(platform11);
+		collides.add(platform12);
+		collides.add(platform13);
+		collides.add(platform14);
+
+
+
+
+
 
 	}
 	

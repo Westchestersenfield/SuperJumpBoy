@@ -20,6 +20,7 @@ import Model.inGameObjects.*;
 import Model.inGameObjects.NPCs.NPC;
 import Model.inGameObjects.NPCs.PinkSlime;
 import Model.inGameObjects.NPCs.ScrubPatrol;
+import Model.menuStates.EscapeMenu;
 import Model.zones.zoneAbstract.Zone;
 import slickMain.Main;
 
@@ -72,8 +73,8 @@ public class Level3 extends Zone{
 		background = new Image("/assets/art/levels/zone1/level3.png");
 		hearts = new Image("/assets/art/characters/pixelHearts.png");
 		
+		music = new Music("/assets/sound/music/level1.ogg");
 		player = Main.getPlayer();
-		player.setCurrentState(this);		
 		
 		//Coins init
 		createCoins();
@@ -91,6 +92,7 @@ public class Level3 extends Zone{
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+		player.setCurrentState(this);		
 		g.setColor(Color.white);
 	
 		
@@ -152,19 +154,18 @@ public class Level3 extends Zone{
 	
 	
 	
+	
 	public void changeState(GameContainer gc, StateBasedGame sbg)
 	{
-		music.stop();
+		//music.stop();
 	    Input input = gc.getInput();
 	    if(input.isKeyPressed(Keyboard.KEY_ESCAPE))
 	    {
+	      //  EscapeMenu.getMusic().play();
 	        sbg.enterState(9001);
 	    }
-	    else if(input.isKeyPressed(Keyboard.KEY_SPACE))
-	    {
-	        sbg.enterState(9002);
-	    }
 	}
+	
 	
 	
 	public void nextLevel(GameContainer gc, StateBasedGame sbg)
@@ -233,6 +234,12 @@ public class Level3 extends Zone{
 	
 	public void createDed() {
 		ded = new ArrayList<Rectangle>();
+	}
+
+	@Override
+	public Music getMusic() {
+		// TODO Auto-generated method stub
+		return music;
 	}
 	
 }

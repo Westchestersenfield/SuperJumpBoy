@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
@@ -47,9 +48,12 @@ public abstract class Zone extends BasicGameState {
 	public abstract void createCoins();
 	public abstract void createPlatforms();
 
-		
+	
 	
 	public abstract Sound getFootStepType();
+	public abstract Music getMusic();
+
+	//public abstract Music getMusic();
 	
 
 }

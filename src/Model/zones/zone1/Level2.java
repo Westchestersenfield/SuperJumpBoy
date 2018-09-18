@@ -69,7 +69,8 @@ public class Level2 extends Zone{
 		hearts = new Image("/assets/art/characters/pixelHearts.png");
 		
 		player = Main.getPlayer();
-		player.setCurrentState(this);		
+		music = new Music("/assets/sound/music/level1.ogg");
+
 		
 		//Coins init
 		createCoins();
@@ -87,6 +88,8 @@ public class Level2 extends Zone{
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+		player.setCurrentState(this);		
+
 		g.setColor(Color.white);
 	
 		
@@ -236,6 +239,12 @@ public class Level2 extends Zone{
 	
 	public void createDed() {
 		ded = new ArrayList<Rectangle>();
+	}
+
+	@Override
+	public Music getMusic() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

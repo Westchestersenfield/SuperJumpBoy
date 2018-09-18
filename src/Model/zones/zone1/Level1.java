@@ -19,6 +19,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import Model.inGameObjects.*;
 import Model.inGameObjects.NPCs.NPC;
 import Model.inGameObjects.NPCs.ScrubPatrol;
+import Model.menuStates.EscapeMenu;
 import Model.zones.zoneAbstract.Zone;
 import slickMain.Main;
 
@@ -26,8 +27,9 @@ public class Level1 extends Zone{
 	
 	public static int id = 1; //increment this
 	
+	private EscapeMenu escapeMenu = new EscapeMenu();
 	private Sound footStepType;
-	private Music music;
+	private static Music music;
 		
 	private Rectangle floor;
 	private Rectangle sideWest;
@@ -67,7 +69,7 @@ public class Level1 extends Zone{
 		background = new Image("/assets/art/levels/zone1/level1.png");
 		
 		player = Main.getPlayer();
-		player.setCurrentState(this);		
+		music = new Music("/assets/sound/music/level1.ogg");
 		
 		//Coins init
 		createCoins();
@@ -120,6 +122,8 @@ public class Level1 extends Zone{
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+		player.setCurrentState(this);		
+
 		Input input = gc.getInput(); //obtain keyboard input
 		
 		for(int i = 0; i < enemies.size(); i++) {
@@ -137,6 +141,9 @@ public class Level1 extends Zone{
 		if(input.isKeyDown(Input.KEY_R)) {
 			System.out.println("Here's a break");
 		}
+		if(input.isKeyDown(Input.KEY_ESCAPE)) {
+			changeState(gc, sbg);
+		}
 		
 		if(player.isLoadNext() == true) {nextLevel(gc, sbg);}
 	}
@@ -151,15 +158,12 @@ public class Level1 extends Zone{
 	
 	public void changeState(GameContainer gc, StateBasedGame sbg)
 	{
-		music.stop();
+		//music.stop();
 	    Input input = gc.getInput();
 	    if(input.isKeyPressed(Keyboard.KEY_ESCAPE))
 	    {
-	        sbg.enterState(1000);
-	    }
-	    else if(input.isKeyPressed(Keyboard.KEY_SPACE))
-	    {
-	        sbg.enterState(1001);
+	        escapeMenu.getMusic().play();
+	        sbg.enterState(9001);
 	    }
 	}
 	
@@ -170,9 +174,13 @@ public class Level1 extends Zone{
         player.getBody().setX(20);
 	}
 	
+	
+	
+	
+	
+	
 	public Sound getFootStepType(){
 		return footStepType;
-		
 	}
 		
 	public void createMobs() {
@@ -225,6 +233,11 @@ public class Level1 extends Zone{
 	
 	public void createDed() {
 		ded = new ArrayList<Rectangle>();
+	}
+
+	@Override
+	public Music getMusic() {
+		return music;
 	}
 	
 }

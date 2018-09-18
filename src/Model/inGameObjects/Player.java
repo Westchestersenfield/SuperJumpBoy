@@ -63,11 +63,11 @@ public class Player {
 	private Rectangle body;
 	private Image image;
 	
-	private float speed = 2.4f;   
+	private float speed = 2.5f;   
 	private static float gravity = 0.3f;
-	private static float jumpStrength = -8;
+	private static float jumpStrength = -8.0f;
 	 
-	private static int iterations = 10;	 
+	private static int iterations = 20;	 
 	private float vX = 0;
 	private float vY = 0;
 

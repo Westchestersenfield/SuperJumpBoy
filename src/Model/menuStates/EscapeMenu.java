@@ -18,44 +18,34 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import Model.inGameObjects.Player;
 import Model.zones.zoneAbstract.Zone;
 import slickMain.Main;
 
 
-public class StartScreen extends Zone  {
+public class EscapeMenu extends Zone  {
 
-	public static int id = 0; //increment this
-	private Image startScreen;
+	public static int id = 9001; //increment this
+	private Image escapeMenu;
 	private static Music music;
-	private Music nextMusic;
+	private static Music nextMusic;
 	private Sound start;
 	private Main main;
-	
-	private SpriteSheet pressStart;
-	private Animation pressStartBlink;
-	
+		
 	private Rectangle title; 
 
 	@Override
-	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		pressStart = new SpriteSheet("/assets/art/title/pressStart.png", 271,47);
-		pressStartBlink = new Animation(pressStart, 750);
-		
-		startScreen = new Image("/assets/art/title/title.png");
-		
-		music = new Music("/assets/sound/music/title.ogg");
-		nextMusic = new Music("/assets/sound/music/level1.ogg");
-		
+	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {		
+		escapeMenu = new Image("/assets/art/title/title.png");
+	
+		setMusic(new Music("/assets/sound/music/saveMusic.ogg"));
 		start = new Sound("/assets/sound/ui/positive.wav");  //load or positive
-		music.play();
-
 	}
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setColor(Color.cyan);
-		g.drawImage(startScreen, 0, 0);	
-		pressStartBlink.draw(500, 550);
+		g.drawImage(escapeMenu, 0, 0);	
 	}
 
 	@Override
@@ -73,21 +63,24 @@ public class StartScreen extends Zone  {
 	
 	
 	
+	//If you are on escape menu, and press the escape key, return to players current game state
 	public void changeState(GameContainer gc, StateBasedGame sbg) 
 	{
 	    Input input = gc.getInput();
-	    if(input.isKeyPressed(Keyboard.KEY_SPACE))
+	    if(input.isKeyPressed(Keyboard.KEY_ESCAPE))
 	    {
-			music.stop();
+			getMusic().stop();
 			start.play();
-			nextMusic.play(1,50.0f);
 			input.clearKeyPressedRecord();
-			Main.getPlayer().getBody().setX(10);
-			Main.getPlayer().init();
-	        sbg.enterState(1);
+			Main.getPlayer().getCurrentState().getMusic().play();
+	        sbg.enterState(Main.getPlayer().getCurrentState().getID());
 	    }
 	}
 
+	
+	
+	
+	
 	
 	
 	
@@ -111,7 +104,6 @@ public class StartScreen extends Zone  {
 
 	@Override
 	public void createCoins() {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -121,10 +113,13 @@ public class StartScreen extends Zone  {
 		
 	}
 
-	@Override
+	
 	public Music getMusic() {
-		// TODO Auto-generated method stub
 		return music;
+	}
+
+	public void setMusic(Music music) {
+		this.music = music;
 	}
 	
 	

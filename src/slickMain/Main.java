@@ -10,6 +10,7 @@ import org.newdawn.slick.geom.ShapeRenderer;
 import org.newdawn.slick.state.StateBasedGame;
 
 import Model.inGameObjects.Player;
+import Model.menuStates.EscapeMenu;
 import Model.menuStates.StartScreen;
 import Model.zones.*;
 import Model.zones.zone1.*;
@@ -46,8 +47,9 @@ public class Main extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer arg0) throws SlickException {
 		addState(startScreen);
-//		addState(new Level1());
-//		addState(new Level2());
+		addState(new EscapeMenu());
+		addState(new Level1());
+		addState(new Level2());
 		addState(new Level3());
 
 		

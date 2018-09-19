@@ -149,6 +149,7 @@ public class Level3 extends Zone{
 		
 		if(player.isLoadNext() == true) {nextLevel(gc, sbg);}
 		
+		
 	}
 
 
